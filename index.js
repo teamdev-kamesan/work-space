@@ -191,6 +191,25 @@ function createRotateMino() {
     return newMino;
 }
 
+function clearLine() {
+    for (let y = 0; y < BOARD_ROW; y++) {
+        let isLineOK = true;
+        for (let x = 0; x < BOARD_COL; x++) {
+            if (board[y][x] === 0) {
+                isLineOK = false;
+                break;
+            }
+        }
+        if (isLineOK) {
+            for (let ny = y; ny > 0; ny--) {
+                for (let nx = 0; nx < BOARD_COL; nx++) {
+                    board[ny][nx] = board[ny - 1][nx];
+                }
+            }
+        }
+    }
+}
+
 function dropMino() {
     /**
      * 可能な場合はミノを落下させる
@@ -199,7 +218,7 @@ function dropMino() {
         offsetY++;
     } else {
         confirmMino();
-        // clearLine();
+        clearLine();
         minoIdx = randomMinoIdx();
         mino = MINO_TYPES[minoIdx];
         initStartPos();
