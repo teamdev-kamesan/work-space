@@ -155,7 +155,19 @@ function drawMino(x, y, minoIdx) {
     ctx.strokeRect(px, py, BLOCK_SIZE, BLOCK_SIZE);
 }
 
+function ghostPosY() {
+    /**
+     * ゴーストのY座標を返す
+     */
+    // ghostY = 0;
+    // while (canMove(0, 1, mino)) ghostY++;
+    // return ghostY;
+}
+
 function canMove(dx, dy, currentMino = mino) {
+    /**
+     * 指定された方向に移動できるかどうかを返す
+     */
     for (let y = 0; y < MINO_SIZE; y++) {
         for (let x = 0; x < MINO_SIZE; x++) {
             if (currentMino[y][x]) {
