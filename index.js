@@ -6,6 +6,14 @@ const BLOCK_SIZE = 30;
 const BOARD_ROW = 20;
 const BOARD_COL = 10;
 
+const GAME_STATES = Object.freeze({
+    beforeStart: "beforeStart",
+    playing: "playing",
+    gameOver: "gameover"
+})
+
+let gameState = GAME_STATES.beforeStart
+
 const canvas = document.getElementById("canvas");
 
 const ctx = canvas.getContext("2d");
@@ -111,6 +119,16 @@ function draw() {
             }
         }
     }
+
+    if (gameState === GAME_STATES.gameOver) {
+        const s = "GAME OVER";
+        ctx.font = "40px 'MS ゴシック'";
+        const w = ctx.measureText(s).width;
+        const x = canvasW / 2 - w / 2;
+        const y = canvasH / 2 - 20;
+        ctx.fillStyle = 'white';
+        ctx.fillText(s, x, y);
+    }
 }
 
 function confirmMino() {
@@ -185,6 +203,10 @@ function dropMino() {
         minoIdx = randomMinoIdx();
         mino = MINO_TYPES[minoIdx];
         initStartPos();
+        if (!canMove(0, 0)) {
+            gameState = GAME_STATES.gameOver;
+            clearInterval(timerId);
+        }
     }
     draw();
 }
@@ -209,15 +231,22 @@ function init() {
             board[y][x] = 0;
         }
     }
+    draw();
+}
+
+function gameStart() {
+    if (gameState === GAME_STATES.playing) return
     minoIdx = randomMinoIdx();
     mino = MINO_TYPES[minoIdx];
 
     initStartPos();
     timerId = setInterval(dropMino, dropSpeed);
     draw();
+    gameState = GAME_STATES.playing
 }
 
 document.onkeydown = (e) => {
+    if (gameState === GAME_STATES.gameOver) return;
     // キー入力のマッピング
     switch (e.code) {
         case "ArrowLeft":
