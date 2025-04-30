@@ -25,6 +25,11 @@ const canvasH = BLOCK_SIZE * BOARD_ROW;
 canvas.width = canvasW;
 canvas.height = canvasH;
 
+let nextMinoIdx;
+let nextMino;
+const nextCanvas = document.getElementById("nextCanvas");
+const nextCtx = nextCanvas.getContext("2d");
+
 const container = document.getElementById("container");
 container.style.width = canvasW + 'px';
 
@@ -406,8 +411,11 @@ function dropMino() {
         hasMoved = false
         confirmMino();
         clearLine();
-        minoIdx = randomMinoIdx();
-        mino = MINO_TYPES[minoIdx];
+        minoIdx = nextMinoIdx;
+        mino = nextMino;
+        nextMinoIdx = randomMinoIdx();
+        nextMino = MINO_TYPES[nextMinoIdx];
+        drawNext();
         initStartPos();
         if (!canMove(0, 0)) {
             gameState = GAME_STATES.gameOver;
@@ -448,11 +456,89 @@ function gameStart() {
 
     minoIdx = randomMinoIdx();
     mino = MINO_TYPES[minoIdx];
+    nextMinoIdx = randomMinoIdx();
+    nextMino = MINO_TYPES[nextMinoIdx];
 
     initStartPos();
     timerId = setInterval(dropMino, dropSpeed);
     draw();
+    drawNext();
     gameState = GAME_STATES.playing
+}
+
+function drawNext() {
+    nextCtx.clearRect(0, 0, nextCanvas.width, nextCanvas.height);
+    for (let y = 0; y < MINO_SIZE; y++) {
+        for (let x = 0; x < MINO_SIZE; x++) {
+            if (nextMino[y][x]) {
+                drawNextMino(x, y, nextMinoIdx);
+            }
+        }
+    }
+}
+
+function drawNextMino(x, y, idx) {
+    let px = x * BLOCK_SIZE;
+    let py = y * BLOCK_SIZE;
+    let s = BLOCK_SIZE;
+    let offset = s / 5;
+
+    nextCtx.fillStyle = MINO_COLORS[idx];
+    nextCtx.fillRect(px, py, s, s);
+
+
+    // 上側ハイライト
+    nextCtx.fillStyle = HIGHT_COLOR[idx];
+    nextCtx.fillRect(px, py, s, offset);
+
+    // 左側シャドウ
+    nextCtx.fillStyle = SHADE_COLOR2[idx];
+    nextCtx.fillRect(px, py, offset, s);
+
+    // 右側シャドウ
+    nextCtx.fillStyle = SHADE_COLOR2[idx];
+    nextCtx.fillRect(px + s - offset, py, offset, s);
+
+    // 下側シャドウ
+    nextCtx.fillStyle = SHADE_COLOR1[idx];
+    nextCtx.fillRect(px, py + s - offset, s, offset);
+
+    nextCtx.beginPath();
+    nextCtx.moveTo(px, py);
+    nextCtx.lineTo(px + offset, py);
+    nextCtx.lineTo(px + offset, py + offset);
+    nextCtx.closePath();
+    nextCtx.fillStyle = HIGHT_COLOR[idx];
+    nextCtx.fill();
+
+    nextCtx.beginPath();
+    nextCtx.moveTo(px + s - offset, py);
+    nextCtx.lineTo(px + s, py);
+    nextCtx.lineTo(px + s - offset, py + offset);
+    nextCtx.closePath();
+    nextCtx.fillStyle = HIGHT_COLOR[idx];
+    nextCtx.fill();
+
+    nextCtx.beginPath();
+    nextCtx.moveTo(px, py + s - offset);
+    nextCtx.lineTo(px + offset, py + s - offset);
+    nextCtx.lineTo(px, py + s);
+    nextCtx.closePath();
+    nextCtx.fillStyle = SHADE_COLOR2[idx];
+    nextCtx.fill();
+
+    nextCtx.beginPath();
+    nextCtx.moveTo(px + s, py + s - offset);
+    nextCtx.lineTo(px + s, py + s);
+    nextCtx.lineTo(px + s - offset, py + s - offset);
+    nextCtx.closePath();
+    nextCtx.fillStyle = SHADE_COLOR2[idx];
+    nextCtx.fill();
+
+
+    // 装飾（省略可：描画スタイルは drawMino に準ずる）
+    nextCtx.strokeStyle = "black";
+    nextCtx.strokeRect(px, py, s, s);
 }
 
 document.onkeydown = (e) => {
