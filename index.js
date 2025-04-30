@@ -302,7 +302,7 @@ function dropMino() {
      * 可能な場合はミノを落下させる
      * 置けたかどうかのboolを返す
      */
-    hasMoved = true
+    let hasMoved = true
     if (canMove(0, 1)) {
         offsetY++;
     } else {
