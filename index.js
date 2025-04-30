@@ -119,7 +119,7 @@ const SHADE_COLOR2 = [
     '#d89000',
 ]
 
-
+let minoQueue = [] //minoIdxを入れる
 let minoIdx
 let mino
 
@@ -302,27 +302,27 @@ function clearLine() {
         }
     }
 
-    if(clearLineCount == 1){
+    if (clearLineCount == 1) {
         addScore(100);
         clearLineCount = 0;
 
-    }else if(clearLineCount == 2){
+    } else if (clearLineCount == 2) {
         addScore(300);
         clearLineCount = 0;
 
-    }else if(clearLineCount == 3){
+    } else if (clearLineCount == 3) {
         addScore(500);
         clearLineCount = 0;
 
-    }else if(clearLineCount == 4){
+    } else if (clearLineCount == 4) {
         addScore(800);
         clearLineCount = 0;
-        
+
     }
 
 }
 
-function updateScore(){
+function updateScore() {
     /**
      * スコア更新
      */
@@ -366,6 +366,14 @@ function randomMinoIdx() {
     return Math.floor(Math.random() * (MINO_TYPES.length - 1) + 1);
 }
 
+function popMinoQueue() {
+    let res
+    if (minoQueue) {
+        res = minoQueue.pop()
+    }
+    return res
+}
+
 function initStartPos() {
     /**
      * プレイヤーのミノの位置を初期化する
@@ -388,6 +396,7 @@ function init() {
 function gameStart() {
     if (gameState === GAME_STATES.playing) return
     minoIdx = randomMinoIdx();
+
     mino = MINO_TYPES[minoIdx];
 
     initStartPos();
