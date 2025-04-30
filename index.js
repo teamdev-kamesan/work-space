@@ -146,11 +146,11 @@ function draw() {
         }
     }
 
+    const ghostY = ghostPosY();
+    drawGhostMino(offsetX, ghostY, minoIdx)
     for (let y = 0; y < MINO_SIZE; y++) {
         for (let x = 0; x < MINO_SIZE; x++) {
             if (mino[y][x]) {
-                const ghostY = ghostPosY();
-                drawGhostMino(offsetX, ghostY, minoIdx)
                 drawMino(offsetX + x, offsetY + y, minoIdx);
             }
         }
