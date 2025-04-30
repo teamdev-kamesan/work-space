@@ -30,6 +30,12 @@ let nextMino;
 const nextCanvas = document.getElementById("nextCanvas");
 const nextCtx = nextCanvas.getContext("2d");
 
+let holdMinoIdx = 0;
+let holdMino = null;
+let isHoldUsed = false;
+const holdCanvas = document.getElementById("holdCanvas");
+const holdCtx = holdCanvas.getContext("2d");
+
 const container = document.getElementById("container");
 container.style.width = canvasW + 'px';
 
@@ -423,6 +429,7 @@ function dropMino() {
         }
     }
     draw();
+    isHoldUsed = false;
     return hasMoved
 }
 
@@ -541,6 +548,49 @@ function drawNextMino(x, y, idx) {
     nextCtx.strokeRect(px, py, s, s);
 }
 
+function doHold() {
+    if (holdMinoIdx === 0) {
+        holdMinoIdx = minoIdx;
+        holdMino = MINO_TYPES[holdMinoIdx];
+        minoIdx = nextMinoIdx;
+        mino = MINO_TYPES[minoIdx];
+        nextMinoIdx = randomMinoIdx();
+        nextMino = MINO_TYPES[nextMinoIdx];
+    } else {
+        let tempIdx = minoIdx;
+        minoIdx = holdMinoIdx;
+        mino = MINO_TYPES[minoIdx];
+        holdMinoIdx = tempIdx;
+        holdMino = MINO_TYPES[holdMinoIdx];
+    }
+    initStartPos();
+}
+
+function drawHold() {
+    holdCtx.clearRect(0, 0, holdCanvas.width, holdCanvas.height);
+    if (!holdMino) return;
+
+    for (let y = 0; y < MINO_SIZE; y++) {
+        for (let x = 0; x < MINO_SIZE; x++) {
+            if (holdMino[y][x]) {
+                drawHoldMino(x, y, holdMinoIdx);
+            }
+        }
+    }
+}
+
+function drawHoldMino(x, y, idx) {
+    let px = x * BLOCK_SIZE;
+    let py = y * BLOCK_SIZE;
+    let s = BLOCK_SIZE;
+    let offset = s / 5;
+
+    holdCtx.fillStyle = MINO_COLORS[idx];
+    holdCtx.fillRect(px, py, s, s);
+    holdCtx.strokeStyle = "black";
+    holdCtx.strokeRect(px, py, s, s);
+}
+
 document.onkeydown = (e) => {
     if (gameState === GAME_STATES.gameOver) return;
     // キー入力のマッピング
@@ -563,6 +613,15 @@ document.onkeydown = (e) => {
         case "Space":
             // ハードドロップ
             while (dropMino()) { }
+        case "KeyC": 
+            // CキーでHOLD
+            if (!isHoldUsed) {
+                doHold();
+                isHoldUsed = true;
+                draw();
+                drawHold();
+            }
+            break;
     }
     draw();
 }
