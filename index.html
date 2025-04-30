@@ -9,10 +9,32 @@
 </head>
 
 <body onload="init()">
+  <div class="wrapper">
+    <div class="game-layout">
+      <!-- HOLD パネル -->
+      <div class="side-panel">
+        <div class="top-box">
+          <div class="box" id="holdBox"></div>
+          <div class="label">HOLD</div>
+        </div>
+        <div class="bottom-text">
+          <div class="label" id="scoreLabel">SCORE : 0</div>
+        </div>
+      </div>
+
     <div id="container">
         <canvas id="canvas"></canvas>
     </div>
-    <button id="start-button" onclick="gameStart()">start</button>
+
+    <div class="side-panel">
+      <div class="top-box">
+        <div class="box" id="nextBox"></div>
+        <div class="label">NEXT</div>
+      </div>
+      <div class="bottom-text">
+        <button id="start-button" onclick="gameStart()">start</button>
+      </div>
+    </div>
     <script src="index.js"></script>
 </body>
 
