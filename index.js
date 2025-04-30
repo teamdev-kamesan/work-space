@@ -75,14 +75,48 @@ const MINO_TYPES = [
 
 const MINO_COLORS = [
     '',
-    '#f6fe85',
-    '#07e0e7',
-    '#7ced77',
-    '#f78ff0',
-    '#f94246',
-    '#9693fe',
-    '#f2b907',
+    '#f1f000',
+    '#a100f0',
+    '#f00001',
+    '#01f001',
+    '#00f0f1',
+    '#0100f1',
+    '#f0a001',
 ];
+
+const HIGHT_COLOR = [
+    '',
+    '#fbf996',
+    '#e4b9fb',
+    '#fab3af',
+    '#b8f9b7',
+    '#b4fbfa',
+    '#b4b7fe',
+    '#fce5b6',
+]
+
+const SHADE_COLOR1 = [
+    '',
+    '#797703',
+    '#5d1383',
+    '#760003',
+    '#128312',
+    '#00787a',
+    '#000176',
+    '#795001',
+]
+
+const SHADE_COLOR2 = [
+    '',
+    '#d8d800',
+    '#8f00d8',
+    '#d80001',
+    '#01d801',
+    '#01d7d9',
+    '#0100da',
+    '#d89000',
+]
+
 
 let minoIdx
 let mino
@@ -147,12 +181,65 @@ function confirmMino() {
 function drawMino(x, y, minoIdx) {
     let px = x * BLOCK_SIZE;
     let py = y * BLOCK_SIZE;
+    let s = BLOCK_SIZE;
+    let offset = s / 5; // 三角形の幅
 
+    // ベースカラー
     ctx.fillStyle = MINO_COLORS[minoIdx];
-    ctx.fillRect(px, py, BLOCK_SIZE, BLOCK_SIZE);
+    ctx.fillRect(px, py, s, s);
+
+    // 上側ハイライト
+    ctx.fillStyle = HIGHT_COLOR[minoIdx];
+    ctx.fillRect(px, py, s, offset);
+
+    // 左側シャドウ
+    ctx.fillStyle = SHADE_COLOR2[minoIdx];
+    ctx.fillRect(px, py, offset, s);
+
+    // 右側シャドウ
+    ctx.fillStyle = SHADE_COLOR2[minoIdx];
+    ctx.fillRect(px + s - offset, py, offset, s);
+
+    // 下側シャドウ
+    ctx.fillStyle = SHADE_COLOR1[minoIdx];
+    ctx.fillRect(px, py + s - offset, s, offset);
+
+    ctx.beginPath();
+    ctx.moveTo(px, py);
+    ctx.lineTo(px + offset, py);
+    ctx.lineTo(px + offset, py + offset);
+    ctx.closePath();
+    ctx.fillStyle = HIGHT_COLOR[minoIdx];
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(px + s - offset, py);
+    ctx.lineTo(px + s, py);
+    ctx.lineTo(px + s - offset, py + offset);
+    ctx.closePath();
+    ctx.fillStyle = HIGHT_COLOR[minoIdx];
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(px, py + s - offset);
+    ctx.lineTo(px + offset, py + s - offset);
+    ctx.lineTo(px, py + s);
+    ctx.closePath();
+    ctx.fillStyle = SHADE_COLOR2[minoIdx];
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(px + s, py + s - offset );
+    ctx.lineTo(px + s , py + s );
+    ctx.lineTo(px + s - offset, py + s - offset);
+    ctx.closePath();
+    ctx.fillStyle = SHADE_COLOR2[minoIdx];
+    ctx.fill();
+
+
     // ブロックの線を描画
     ctx.strokeStyle = "black";
-    ctx.strokeRect(px, py, BLOCK_SIZE, BLOCK_SIZE);
+    ctx.strokeRect(px, py, s, s);
 }
 
 function ghostPosY() {
