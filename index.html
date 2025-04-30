@@ -6,13 +6,38 @@
     <title>TETRIS</title>
     <meta name="description" content="サイトの概要を記載">
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet"> 
 </head>
 
 <body onload="init()">
+  <div class="wrapper">
+    <div class="game-layout">
+      <!-- HOLD パネル -->
+      <div class="side-panel">
+        <div class="top-box">
+          <canvas id="holdCanvas" width="150" height="150"></canvas>
+          <div class="label">HOLD</div>
+        </div>
+        <div class="bottom-text">
+          <div class="label" id="scoreLabel">SCORE : 0</div>
+        </div>
+      </div>
+
     <div id="container">
         <canvas id="canvas"></canvas>
     </div>
-    <button id="start-button" onclick="gameStart()">start</button>
+
+    <div class="side-panel">
+      <div class="top-box">
+        <canvas id="nextCanvas" width="150" height="150"></canvas>
+        <div class="label">NEXT</div>
+      </div>
+      <div class="bottom-text">
+        <button id="start-button" onclick="gameStart()">START</button>
+      </div>
+    </div>
     <script src="index.js"></script>
 </body>
 
