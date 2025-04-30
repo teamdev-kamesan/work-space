@@ -407,7 +407,7 @@ function addScore(amount) {
 }
 
 
-function dropMino(immidiate = false) {
+function dropMino() {
     /**
      * 可能な場合はミノを落下させる
      * 置けたかどうかのboolを返す
@@ -416,7 +416,6 @@ function dropMino(immidiate = false) {
     if (canMove(0, 1)) {
         offsetY++;
     } else {
-        if (!immidiate) sleep(1000)
         hasMoved = false
         hasHoldedThisTurn = false
         confirmMino();
@@ -581,12 +580,3 @@ class Bag {
         return this.minoIdxs.pop()
     }
 }
-
-
-function sleep(waitMsec) {
-    var startMsec = new Date();
-
-    while (new Date() - startMsec < waitMsec);
-}
-
-sleep(5000);
