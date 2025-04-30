@@ -130,6 +130,15 @@ const board = [];
 
 let timerId = NaN;
 
+document.addEventListener("keydown", function (event) {
+    if (event.code === "Space" || event.key === " ") {
+        if (document.activeElement.tagName === "BUTTON") {
+            event.preventDefault(); // スペースによるボタンの押下を防ぐ
+        }
+    }
+});
+
+
 
 function draw() {
     /**
@@ -156,6 +165,7 @@ function draw() {
         }
     }
 
+    //ゲームオーバーの処理
     if (gameState === GAME_STATES.gameOver) {
         const s = "GAME OVER";
         ctx.font = "30px 'Press Start 2P'";
@@ -238,7 +248,6 @@ function drawMino(x, y, minoIdx) {
     ctx.fillStyle = SHADE_COLOR2[minoIdx];
     ctx.fill();
 
-
     // ブロックの線を描画
     ctx.strokeStyle = "black";
     ctx.strokeRect(px, py, s, s);
@@ -302,24 +311,46 @@ function clearLine() {
         }
     }
 
-    if(clearLineCount == 1){
+    if(clearLineCount === 1){
         addScore(100);
         clearLineCount = 0;
 
-    }else if(clearLineCount == 2){
+    }else if(clearLineCount === 2){
         addScore(300);
         clearLineCount = 0;
 
-    }else if(clearLineCount == 3){
+    }else if(clearLineCount === 3){
         addScore(500);
         clearLineCount = 0;
 
-    }else if(clearLineCount == 4){
+    }else if(clearLineCount === 4){
         addScore(800);
         clearLineCount = 0;
         
     }
 
+}
+
+function destroyAllMino(){
+    /**
+     * 全てのミノを削除
+     */
+    for (let y = 0; y < BOARD_ROW; y++) {
+
+        for (let ny = y; ny > 0; ny--) {
+            for (let nx = 0; nx < BOARD_COL; nx++) {
+                board[ny][nx] = board[ny - 1][nx];
+            }
+        }
+    }
+
+    clearScore();
+
+}
+
+function clearScore(){
+    SCORE = 0;
+    updateScore();
 }
 
 function updateScore(){
@@ -386,7 +417,10 @@ function init() {
 }
 
 function gameStart() {
-    if (gameState === GAME_STATES.playing) return
+    if (gameState === GAME_STATES.playing)return
+
+    destroyAllMino();
+
     minoIdx = randomMinoIdx();
     mino = MINO_TYPES[minoIdx];
 
