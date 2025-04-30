@@ -157,6 +157,8 @@ function draw() {
         }
     }
 
+    const ghostY = ghostPosY();
+    drawGhostMino(offsetX, ghostY, minoIdx)
     for (let y = 0; y < MINO_SIZE; y++) {
         for (let x = 0; x < MINO_SIZE; x++) {
             if (mino[y][x]) {
@@ -253,12 +255,35 @@ function drawMino(x, y, minoIdx) {
     ctx.strokeRect(px, py, s, s);
 }
 
-function canMove(dx, dy, currentMino = mino) {
+function drawGhostMino(x, y, minoIdx) {
+    const ghostColor = "rgba(200,200,200,0.4)";
+    for (let y2 = 0; y2 < MINO_SIZE; y2++) {
+        for (let x2 = 0; x2 < MINO_SIZE; x2++) {
+            if (mino[y2][x2]) {
+                ctx.fillStyle = ghostColor;
+                ctx.fillRect((x + x2) * BLOCK_SIZE, (y + y2) * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE);
+            }
+        }
+    }
+}
+
+function ghostPosY() {
+    let ghostY = offsetY;
+    while (canMove(0, 1, mino, offsetX, ghostY)) {
+        ghostY++;
+    }
+    return ghostY;
+}
+
+function canMove(dx, dy, currentMino = mino, baseX = offsetX, baseY = offsetY) {
+    /**
+     * 指定された方向に移動できるかどうかを返す
+     */
     for (let y = 0; y < MINO_SIZE; y++) {
         for (let x = 0; x < MINO_SIZE; x++) {
             if (currentMino[y][x]) {
-                let nx = offsetX + x + dx;
-                let ny = offsetY + y + dy;
+                let nx = baseX + x + dx;
+                let ny = baseY + y + dy;
                 if (
                     ny < 0 ||
                     nx < 0 ||
