@@ -8,6 +8,7 @@ body {
   align-items: center;
   justify-content: center;
   height: 100vh;
+  font-family: "Press Start 2P", system-ui;
 }
 
 .wrapper {
@@ -57,7 +58,7 @@ body {
 }
 
 .label {
-  font-size: 12px;
+  font-size: 18px;
   margin-top: 8px;
   color: #000;
   text-align: center;
@@ -72,7 +73,7 @@ body {
 
 #start-button {
   font-family: "Press Start 2P", system-ui;
-  font-size: 10px;
+  font-size: 18px;
   padding: 6px 12px;
   cursor: pointer;
 }
