@@ -172,19 +172,19 @@ function drawMino(x, y, minoIdx) {
 
     // 上側ハイライト
     ctx.fillStyle = HIGHT_COLOR[minoIdx];
-    ctx.fillRect(px, py, s, s / 5);
+    ctx.fillRect(px, py, s, offset);
 
     // 左側シャドウ
     ctx.fillStyle = SHADE_COLOR2[minoIdx];
-    ctx.fillRect(px, py, s / 5, s);
+    ctx.fillRect(px, py, offset, s);
 
     // 右側シャドウ
     ctx.fillStyle = SHADE_COLOR2[minoIdx];
-    ctx.fillRect(px + s - s / 5, py, s / 5, s);
+    ctx.fillRect(px + s - offset, py, offset, s);
 
     // 下側シャドウ
     ctx.fillStyle = SHADE_COLOR1[minoIdx];
-    ctx.fillRect(px, py + s - s / 5, s, s / 5);
+    ctx.fillRect(px, py + s - offset, s, offset);
 
     ctx.beginPath();
     ctx.moveTo(px, py);
