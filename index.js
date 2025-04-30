@@ -6,6 +6,8 @@ const BLOCK_SIZE = 30;
 const BOARD_ROW = 20;
 const BOARD_COL = 10;
 
+let SCORE = 0;
+
 const GAME_STATES = Object.freeze({
     beforeStart: "beforeStart",
     playing: "playing",
@@ -278,6 +280,8 @@ function createRotateMino() {
     return newMino;
 }
 
+let clearLineCount = 0;
+
 function clearLine() {
     for (let y = 0; y < BOARD_ROW; y++) {
         let isLineOK = true;
@@ -293,9 +297,46 @@ function clearLine() {
                     board[ny][nx] = board[ny - 1][nx];
                 }
             }
+
+            clearLineCount += 1;
         }
     }
+
+    if(clearLineCount == 1){
+        addScore(100);
+        clearLineCount = 0;
+
+    }else if(clearLineCount == 2){
+        addScore(300);
+        clearLineCount = 0;
+
+    }else if(clearLineCount == 3){
+        addScore(500);
+        clearLineCount = 0;
+
+    }else if(clearLineCount == 4){
+        addScore(800);
+        clearLineCount = 0;
+        
+    }
+
 }
+
+function updateScore(){
+    /**
+     * スコア更新
+     */
+    document.getElementById("scoreLabel").textContent = "SCORE : " + SCORE;
+}
+
+function addScore(amount) {
+    /**
+     * スコア加算
+     */
+    SCORE += amount;
+    updateScore();
+}
+
 
 function dropMino() {
     /**
