@@ -33,6 +33,8 @@ const nextCtx = nextCanvas.getContext("2d");
 let holdMinoIdx = 0;
 let holdMino = null;
 let isHoldUsed = false;
+let hasHoldedThisTurn = false;
+
 const holdCanvas = document.getElementById("holdCanvas");
 const holdCtx = holdCanvas.getContext("2d");
 
@@ -415,6 +417,7 @@ function dropMino() {
         offsetY++;
     } else {
         hasMoved = false
+        hasHoldedThisTurn = false
         confirmMino();
         clearLine();
         minoIdx = nextMinoIdx;
@@ -486,6 +489,7 @@ function drawNext() {
 
 
 function doHold() {
+    if (hasHoldedThisTurn) return
     if (holdMinoIdx === 0) {
         holdMinoIdx = minoIdx;
         holdMino = MINO_TYPES[holdMinoIdx];
@@ -500,6 +504,7 @@ function doHold() {
         holdMinoIdx = tempIdx;
         holdMino = MINO_TYPES[holdMinoIdx];
     }
+    hasHoldedThisTurn = true;
     initStartPos();
 }
 
