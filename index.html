@@ -17,7 +17,7 @@
       <!-- HOLD パネル -->
       <div class="side-panel">
         <div class="top-box">
-          <canvas id="holdCanvas" width="150" height="150"></canvas>
+          <canvas id="holdCanvas" width="120" height="120"></canvas>
           <div class="label">HOLD</div>
         </div>
         <div class="bottom-text">
@@ -31,10 +31,20 @@
 
     <div class="side-panel">
       <div class="top-box">
-        <canvas id="nextCanvas" width="150" height="150"></canvas>
+        <canvas id="nextCanvas" width="120" height="120"></canvas>
         <div class="label">NEXT</div>
       </div>
       <div class="bottom-text">
+        <div class="description-text">
+          <p>UP &nbsp;&nbsp;&nbsp;: Rotate</p>
+          <p>DOWN &nbsp;: Soft Drop</p>
+          <br>
+          <p>LEFT &nbsp;: Move left</p>
+          <p>RIGHT : Move right</p>
+          <br>
+          <p>SPACE : Hard Droop</p>
+          <p>C KEY : Hold</p>
+        </div>
         <button id="start-button" onclick="gameStart()">START</button>
       </div>
     </div>
