@@ -57,6 +57,11 @@ body {
   align-items: center;
 }
 
+#nextCanvas {
+  background-color: #000;
+}
+
+
 .label {
   font-size: 12px;
   margin-top: 8px;
