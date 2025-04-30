@@ -157,7 +157,7 @@ function draw() {
     for (let y = 0; y < BOARD_ROW; y++) {
         for (let x = 0; x < BOARD_COL; x++) {
             if (board[y][x]) {
-                drawMino(x, y, board[y][x]);
+                drawMino(x, y, board[y][x], ctx);
             }
         }
     }
@@ -167,7 +167,7 @@ function draw() {
     for (let y = 0; y < MINO_SIZE; y++) {
         for (let x = 0; x < MINO_SIZE; x++) {
             if (mino[y][x]) {
-                drawMino(offsetX + x, offsetY + y, minoIdx);
+                drawMino(offsetX + x, offsetY + y, minoIdx, ctx);
             }
         }
     }
@@ -197,7 +197,7 @@ function confirmMino() {
     }
 }
 
-function drawMino(x, y, minoIdx) {
+function drawMino(x, y, minoIdx, ctx) {
     let px = x * BLOCK_SIZE;
     let py = y * BLOCK_SIZE;
     let s = BLOCK_SIZE;
@@ -341,27 +341,27 @@ function clearLine() {
         }
     }
 
-    if(clearLineCount === 1){
+    if (clearLineCount === 1) {
         addScore(100);
         clearLineCount = 0;
 
-    }else if(clearLineCount === 2){
+    } else if (clearLineCount === 2) {
         addScore(300);
         clearLineCount = 0;
 
-    }else if(clearLineCount === 3){
+    } else if (clearLineCount === 3) {
         addScore(500);
         clearLineCount = 0;
 
-    }else if(clearLineCount === 4){
+    } else if (clearLineCount === 4) {
         addScore(800);
         clearLineCount = 0;
-        
+
     }
 
 }
 
-function destroyAllMino(){
+function destroyAllMino() {
     /**
      * 全てのミノを削除
      */
@@ -378,12 +378,12 @@ function destroyAllMino(){
 
 }
 
-function clearScore(){
+function clearScore() {
     SCORE = 0;
     updateScore();
 }
 
-function updateScore(){
+function updateScore() {
     /**
      * スコア更新
      */
@@ -450,7 +450,7 @@ function init() {
 }
 
 function gameStart() {
-    if (gameState === GAME_STATES.playing)return
+    if (gameState === GAME_STATES.playing) return
 
     destroyAllMino();
 
@@ -471,75 +471,12 @@ function drawNext() {
     for (let y = 0; y < MINO_SIZE; y++) {
         for (let x = 0; x < MINO_SIZE; x++) {
             if (nextMino[y][x]) {
-                drawNextMino(x, y, nextMinoIdx);
+                drawMino(x, y, nextMinoIdx, nextCtx);
             }
         }
     }
 }
 
-function drawNextMino(x, y, idx) {
-    let px = x * BLOCK_SIZE;
-    let py = y * BLOCK_SIZE;
-    let s = BLOCK_SIZE;
-    let offset = s / 5;
-
-    nextCtx.fillStyle = MINO_COLORS[idx];
-    nextCtx.fillRect(px, py, s, s);
-
-
-    // 上側ハイライト
-    nextCtx.fillStyle = HIGHT_COLOR[idx];
-    nextCtx.fillRect(px, py, s, offset);
-
-    // 左側シャドウ
-    nextCtx.fillStyle = SHADE_COLOR2[idx];
-    nextCtx.fillRect(px, py, offset, s);
-
-    // 右側シャドウ
-    nextCtx.fillStyle = SHADE_COLOR2[idx];
-    nextCtx.fillRect(px + s - offset, py, offset, s);
-
-    // 下側シャドウ
-    nextCtx.fillStyle = SHADE_COLOR1[idx];
-    nextCtx.fillRect(px, py + s - offset, s, offset);
-
-    nextCtx.beginPath();
-    nextCtx.moveTo(px, py);
-    nextCtx.lineTo(px + offset, py);
-    nextCtx.lineTo(px + offset, py + offset);
-    nextCtx.closePath();
-    nextCtx.fillStyle = HIGHT_COLOR[idx];
-    nextCtx.fill();
-
-    nextCtx.beginPath();
-    nextCtx.moveTo(px + s - offset, py);
-    nextCtx.lineTo(px + s, py);
-    nextCtx.lineTo(px + s - offset, py + offset);
-    nextCtx.closePath();
-    nextCtx.fillStyle = HIGHT_COLOR[idx];
-    nextCtx.fill();
-
-    nextCtx.beginPath();
-    nextCtx.moveTo(px, py + s - offset);
-    nextCtx.lineTo(px + offset, py + s - offset);
-    nextCtx.lineTo(px, py + s);
-    nextCtx.closePath();
-    nextCtx.fillStyle = SHADE_COLOR2[idx];
-    nextCtx.fill();
-
-    nextCtx.beginPath();
-    nextCtx.moveTo(px + s, py + s - offset);
-    nextCtx.lineTo(px + s, py + s);
-    nextCtx.lineTo(px + s - offset, py + s - offset);
-    nextCtx.closePath();
-    nextCtx.fillStyle = SHADE_COLOR2[idx];
-    nextCtx.fill();
-
-
-    // 装飾（省略可：描画スタイルは drawMino に準ずる）
-    nextCtx.strokeStyle = "black";
-    nextCtx.strokeRect(px, py, s, s);
-}
 
 document.onkeydown = (e) => {
     if (gameState === GAME_STATES.gameOver) return;
