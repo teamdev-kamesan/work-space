@@ -510,22 +510,10 @@ function drawHold() {
     for (let y = 0; y < MINO_SIZE; y++) {
         for (let x = 0; x < MINO_SIZE; x++) {
             if (holdMino[y][x]) {
-                drawHoldMino(x, y, holdMinoIdx);
+                drawMino(x, y, holdMinoIdx, holdCtx);
             }
         }
     }
-}
-
-function drawHoldMino(x, y, idx) {
-    let px = x * BLOCK_SIZE;
-    let py = y * BLOCK_SIZE;
-    let s = BLOCK_SIZE;
-    let offset = s / 5;
-
-    holdCtx.fillStyle = MINO_COLORS[idx];
-    holdCtx.fillRect(px, py, s, s);
-    holdCtx.strokeStyle = "black";
-    holdCtx.strokeRect(px, py, s, s);
 }
 
 document.onkeydown = (e) => {
@@ -550,7 +538,8 @@ document.onkeydown = (e) => {
         case "Space":
             // ハードドロップ
             while (dropMino()) { }
-        case "KeyC": 
+            break;
+        case "KeyC":
             // CキーでHOLD
             if (!isHoldUsed) {
                 doHold();
