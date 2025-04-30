@@ -156,7 +156,7 @@ function draw() {
 
     if (gameState === GAME_STATES.gameOver) {
         const s = "GAME OVER";
-        ctx.font = "40px 'MS ゴシック'";
+        ctx.font = "30px 'Press Start 2P'";
         const w = ctx.measureText(s).width;
         const x = canvasW / 2 - w / 2;
         const y = canvasH / 2 - 20;
