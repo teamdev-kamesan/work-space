@@ -416,7 +416,6 @@ function dropMino() {
     if (canMove(0, 1)) {
         offsetY++;
     } else {
-        console.log(hasHoldedThisTurn)
         hasMoved = false
         hasHoldedThisTurn = false
         confirmMino();
