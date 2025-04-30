@@ -229,8 +229,8 @@ function drawMino(x, y, minoIdx) {
     ctx.fill();
 
     ctx.beginPath();
-    ctx.moveTo(px + s, py + s - offset );
-    ctx.lineTo(px + s , py + s );
+    ctx.moveTo(px + s, py + s - offset);
+    ctx.lineTo(px + s, py + s);
     ctx.lineTo(px + s - offset, py + s - offset);
     ctx.closePath();
     ctx.fillStyle = SHADE_COLOR2[minoIdx];
@@ -300,10 +300,13 @@ function clearLine() {
 function dropMino() {
     /**
      * 可能な場合はミノを落下させる
+     * 置けたかどうかのboolを返す
      */
+    hasMoved = true
     if (canMove(0, 1)) {
         offsetY++;
     } else {
+        hasMoved = false
         confirmMino();
         clearLine();
         minoIdx = randomMinoIdx();
@@ -315,6 +318,7 @@ function dropMino() {
         }
     }
     draw();
+    return hasMoved
 }
 
 function randomMinoIdx() {
@@ -370,6 +374,9 @@ document.onkeydown = (e) => {
         case "ArrowDown":
             dropMino()
             break;
+        case "Space":
+            // ハードドロップ
+            while (dropMino()) { }
     }
     draw();
 }
