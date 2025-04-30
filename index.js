@@ -419,7 +419,7 @@ function dropMino() {
         clearLine();
         minoIdx = nextMinoIdx;
         mino = nextMino;
-        nextMinoIdx = randomMinoIdx();
+        nextMinoIdx = bag.popFromBag();
         nextMino = MINO_TYPES[nextMinoIdx];
         drawNext();
         initStartPos();
@@ -436,6 +436,7 @@ function dropMino() {
 function randomMinoIdx() {
     return Math.floor(Math.random() * (MINO_TYPES.length - 1) + 1);
 }
+
 
 function initStartPos() {
     /**
@@ -461,9 +462,10 @@ function gameStart() {
 
     destroyAllMino();
 
-    minoIdx = randomMinoIdx();
+    bag = new Bag()
+    minoIdx = bag.popFromBag();
     mino = MINO_TYPES[minoIdx];
-    nextMinoIdx = randomMinoIdx();
+    nextMinoIdx = bag.popFromBag();
     nextMino = MINO_TYPES[nextMinoIdx];
 
     initStartPos();
@@ -491,7 +493,7 @@ function doHold() {
         holdMino = MINO_TYPES[holdMinoIdx];
         minoIdx = nextMinoIdx;
         mino = MINO_TYPES[minoIdx];
-        nextMinoIdx = randomMinoIdx();
+        nextMinoIdx = bag.popFromBag();
         nextMino = MINO_TYPES[nextMinoIdx];
     } else {
         let tempIdx = minoIdx;
@@ -550,4 +552,26 @@ document.onkeydown = (e) => {
             break;
     }
     draw();
+}
+
+class Bag {
+    minoIdxs = []
+    constructor() {
+        this.createBag()
+    }
+    createBag() {
+        /**
+         * 一意のミノのインデックス一覧をランダムに並び替えたものを返す
+         */
+        const res = [1, 2, 3, 4, 5, 6, 7]
+        for (let i = res.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [res[i], res[j]] = [res[j], res[i]];
+        }
+        this.minoIdxs = res
+    }
+    popFromBag() {
+        if (this.minoIdxs.length <= 0) this.createBag()
+        return this.minoIdxs.pop()
+    }
 }
