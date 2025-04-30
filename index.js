@@ -544,7 +544,7 @@ document.onkeydown = (e) => {
             break;
         case "Space":
             // ハードドロップ
-            while (dropMino(true)) { }
+            while (dropMino()) { }
             break;
         case "KeyC":
             // CキーでHOLD
